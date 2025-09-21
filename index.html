@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Corazón 🌻💕</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            overflow-y: auto;
+            position: relative;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Video de fondo */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+        }
+
+        /* Filtro overlay para el video */
+        .video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, 
+                rgba(255, 107, 107, 0.4) 0%, 
+                rgba(255, 142, 83, 0.3) 50%, 
+                rgba(254, 202, 87, 0.4) 100%);
+            mix-blend-mode: multiply;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Segundo filtro para mejor legibilidad */
+        .video-overlay-dark {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, 
+                rgba(0,0,0,0.2) 0%, 
+                rgba(0,0,0,0.4) 100%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .container {
+            text-align: center;
+            z-index: 10;
+            padding: 20px;
+            width: 100%;
+            max-width: 700px;
+            margin: auto;
+            position: relative;
+        }
+
+        h1 {
+            color: #fff;
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            margin-bottom: 10px;
+            text-shadow: 3px 3px 8px rgba(0,0,0,0.6), 0 0 30px rgba(0,0,0,0.5);
+            animation: fadeInDown 1s ease-out;
+            font-weight: bold;
+        }
+
+        .subtitle {
+            color: #fff;
+            font-size: clamp(1rem, 3vw, 1.3rem);
+            margin-bottom: 20px;
+            animation: fadeInDown 1s ease-out 0.3s both;
+            text-shadow: 2px 2px 6px rgba(0,0,0,0.6), 0 0 20px rgba(0,0,0,0.4);
+            padding: 0 10px;
+        }
+
+        .message {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: clamp(20px, 5vw, 35px);
+            border-radius: 25px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            width: 95%;
+            max-width: 650px;
+            margin: 0 auto;
+            animation: fadeInUp 1s ease-out 0.5s both;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .message::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,215,0,0.1) 0%, transparent 70%);
+            animation: rotate 30s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .message p {
+            color: #333;
+            font-size: clamp(0.95rem, 2.5vw, 1.15rem);
+            line-height: 1.7;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .love-letter {
+            font-style: italic;
+            color: #d63384;
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            margin: 20px 0;
+            padding: 15px;
+            border-left: 3px solid #ff6b6b;
+            background: linear-gradient(90deg, rgba(255,107,107,0.1) 0%, transparent 100%);
+        }
+
+        .date {
+            color: #f59e0b;
+            font-weight: bold;
+            font-size: clamp(1.1rem, 3vw, 1.4rem);
+            margin: 20px 0;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .flower-button {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
+            color: white;
+            border: none;
+            padding: clamp(14px, 3vw, 18px) clamp(25px, 5vw, 45px);
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(255, 107, 107, 0.4);
+            animation: heartbeat 2s infinite;
+            position: relative;
+            overflow: hidden;
+            white-space: normal;
+            max-width: 90%;
+        }
+
+        .flower-button::before {
+            content: '💕';
+            position: absolute;
+            font-size: 1.5em;
+            animation: float-heart 3s ease-in-out infinite;
+        }
+
+        @keyframes float-heart {
+            0%, 100% { 
+                transform: translateY(0) translateX(-50px);
+                opacity: 0;
+            }
+            50% { 
+                transform: translateY(-20px) translateX(-50px);
+                opacity: 1;
+            }
+        }
+
+        .flower-button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.6);
+        }
+
+        .sunflower {
+            position: absolute;
+            width: clamp(50px, 10vw, 70px);
+            height: clamp(50px, 10vw, 70px);
+            animation: float 6s ease-in-out infinite;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            z-index: 5;
+        }
+
+        .sunflower:hover {
+            transform: scale(1.3) rotate(20deg);
+        }
+
+        .petal {
+            position: absolute;
+            width: 40%;
+            height: 40%;
+            background: linear-gradient(135deg, #fbbf24 0%, #fde047 100%);
+            border-radius: 0 50% 0 50%;
+            transform-origin: bottom left;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .center {
+            position: absolute;
+            width: 35%;
+            height: 35%;
+            background: radial-gradient(circle, #92400e 0%, #7c2d12 100%);
+            border-radius: 50%;
+            top: 32.5%;
+            left: 32.5%;
+            z-index: 1;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .reveal-text {
+            color: #d63384;
+            font-size: clamp(1.2rem, 3.5vw, 1.6rem);
+            font-weight: bold;
+            animation: fadeIn 1s ease-out;
+            margin-top: 25px;
+            text-align: center;
+            line-height: 1.5;
+            padding: 0 10px;
+        }
+
+        .hearts-container {
+            font-size: clamp(2rem, 5vw, 2.5rem);
+            margin-top: 15px;
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        .floating-heart {
+            position: absolute;
+            color: rgba(255, 107, 107, 0.8);
+            font-size: clamp(18px, 4vw, 24px);
+            animation: float-up 4s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 4;
+        }
+
+        @keyframes float-up {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            25% {
+                transform: translateY(-25px) rotate(5deg);
+            }
+            75% {
+                transform: translateY(25px) rotate(-5deg);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.08);
+            }
+        }
+
+        @keyframes heartbeat {
+            0%, 100% {
+                transform: scale(1);
+            }
+            25% {
+                transform: scale(1.1);
+            }
+            50% {
+                transform: scale(1);
+            }
+            75% {
+                transform: scale(1.1);
+            }
+        }
+
+        .falling-petal {
+            position: absolute;
+            width: clamp(12px, 3vw, 18px);
+            height: clamp(12px, 3vw, 18px);
+            background: linear-gradient(135deg, #fde047 0%, #fbbf24 100%);
+            border-radius: 0 50% 0 50%;
+            animation: fall linear infinite;
+            opacity: 0.9;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 3;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(110vh) rotate(360deg);
+            }
+        }
+
+        .poem {
+            background: linear-gradient(135deg, rgba(255,215,0,0.1) 0%, rgba(255,107,107,0.1) 100%);
+            padding: clamp(15px, 3vw, 20px);
+            border-radius: 15px;
+            margin: 20px 0;
+            font-style: italic;
+            color: #d63384;
+            line-height: 1.8;
+            position: relative;
+            z-index: 1;
+            font-size: clamp(0.95rem, 2.5vw, 1.05rem);
+        }
+
+        .song-reference {
+            background: rgba(255,182,193,0.15);
+            padding: 10px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-size: clamp(0.9rem, 2.3vw, 1rem);
+            color: #c2185b;
+            font-style: italic;
+        }
+
+        /* Mejoras de responsividad para móviles */
+        @media (max-width: 480px) {
+            body {
+                min-height: 100vh;
+                padding: 10px 0;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            .message {
+                padding: 20px 15px;
+                width: 95%;
+                border-radius: 20px;
+            }
+            
+            .flower-button {
+                padding: 12px 20px;
+                font-size: 0.95rem;
+                width: 90%;
+            }
+            
+            .love-letter {
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+            
+            .sunflower {
+                width: 45px;
+                height: 45px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .poem {
+                padding: 25px;
+            }
+            
+            .reveal-text {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Video de fondo -->
+    <video class="video-background" autoplay muted loop playsinline>
+        <source src="girasoles.mp4" type="video/mp4">
+    </video>
+    <div class="video-overlay"></div>
+    <div class="video-overlay-dark"></div>
+    
+    <div class="container">
+        <h1>Para mi corazón 💕</h1>
+        <p class="subtitle">Mi corazón de melón 🍉</p>
+        
+        <div class="message">
+            <p>Hola preciosa :3,</p>
+            <p class="date">✨ 21 de Septiembre ✨</p>
+            
+            <div class="love-letter">
+                "Ella sabía que él sabía...<br>
+                que algún día pasaría,<br>
+                que vendría a buscarla<br>
+                con sus flores amarillas..." 🌻
+            </div>
+            
+            <p>Y aquí estoy, con estas flores amarillas virtuales que preparé especialmente para ti, porque eres la persona que ilumina mis días como el sol ilumina los girasoles.</p>
+            
+            <div class="poem hidden" id="poem">
+                Anahí, corazón:<br><br>
+                Eres mi primavera eterna,<br>
+                la razón de mis sonrisas,<br>
+                el latido que acelera mi pecho,<br>
+                mi corazón de melón más dulce.<br><br>
+                Cada día contigo es un regalo,<br>
+                y estas flores amarillas son<br>
+                un pequeño símbolo del infinito<br>
+                cariño que siento por ti. 💛
+            </div>
+            
+            <div class="song-reference hidden" id="song">
+                "Corazón de melón, melón, melón...<br>
+                Corazón de melón, partido en dos" 🍉<br>
+                Pero el mío está completo,<br>
+                porque lo tienes tú, mi corazón.
+            </div>
+            
+            <p id="special-message" class="hidden reveal-text"></p>
+            
+            <button class="flower-button" onclick="revealMessage()">
+                🌻 Anahí, haz click aquí corazón 🌻
+            </button>
+            
+            <div class="hearts-container hidden" id="hearts">
+                💕 ∞ 💕
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Crear girasoles flotantes con mejor distribución
+        function createSunflower() {
+            const sunflower = document.createElement('div');
+            sunflower.className = 'sunflower';
+            
+            // Mejor distribución para no sobrecargar en móviles
+            const viewportHeight = window.innerHeight;
+            const viewportWidth = window.innerWidth;
+            const margin = window.innerWidth < 480 ? 20 : 40;
+            
+            // Posicionar solo dentro del viewport visible
+            sunflower.style.left = (margin + Math.random() * (viewportWidth - margin * 2 - 50)) + 'px';
+            sunflower.style.top = (margin + Math.random() * (viewportHeight - margin * 2 - 50)) + 'px';
+            sunflower.style.animationDelay = Math.random() * 6 + 's';
+            
+            // Centro del girasol
+            const center = document.createElement('div');
+            center.className = 'center';
+            sunflower.appendChild(center);
+            
+            // Pétalos
+            for (let i = 0; i < 8; i++) {
+                const petal = document.createElement('div');
+                petal.className = 'petal';
+                petal.style.transform = `rotate(${i * 45}deg)`;
+                sunflower.appendChild(petal);
+            }
+            
+            sunflower.addEventListener('click', function() {
+                createPetalBurst(this);
+                createFloatingHeart(this);
+            });
+            
+            document.body.appendChild(sunflower);
+        }
+
+        // Crear menos girasoles en móviles
+        const sunflowerCount = window.innerWidth < 480 ? 6 : 10;
+        for (let i = 0; i < sunflowerCount; i++) {
+            setTimeout(() => createSunflower(), i * 200);
+        }
+
+        // Crear corazones flotantes
+        function createFloatingHeart(element) {
+            if (element) {
+                const rect = element.getBoundingClientRect();
+                const heart = document.createElement('div');
+                heart.className = 'floating-heart';
+                heart.innerHTML = '❤️';
+                heart.style.left = rect.left + 'px';
+                heart.style.top = rect.top + 'px';
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 4000);
+            }
+        }
+
+        // Crear pétalos cayendo
+        function createFallingPetal() {
+            const petal = document.createElement('div');
+            petal.className = 'falling-petal';
+            petal.style.left = Math.random() * window.innerWidth + 'px';
+            petal.style.animationDuration = (Math.random() * 3 + 5) + 's';
+            petal.style.animationDelay = Math.random() * 5 + 's';
+            document.body.appendChild(petal);
+            
+            setTimeout(() => petal.remove(), 8000);
+        }
+
+        // Crear pétalos con menos frecuencia en móviles
+        const petalInterval = window.innerWidth < 480 ? 2000 : 1500;
+        setInterval(createFallingPetal, petalInterval);
+
+        // Explosión de pétalos al hacer click en un girasol
+        function createPetalBurst(element) {
+            const rect = element.getBoundingClientRect();
+            const burstCount = window.innerWidth < 480 ? 10 : 15;
+            for (let i = 0; i < burstCount; i++) {
+                const petal = document.createElement('div');
+                petal.className = 'falling-petal';
+                petal.style.left = (rect.left + Math.random() * 50) + 'px';
+                petal.style.top = rect.top + 'px';
+                document.body.appendChild(petal);
+                
+                setTimeout(() => petal.remove(), 3000);
+            }
+        }
+
+        // Crear corazones aleatorios
+        function createRandomHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'floating-heart';
+            heart.innerHTML = '💕';
+            heart.style.left = Math.random() * window.innerWidth + 'px';
+            heart.style.bottom = '-50px';
+            heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+            document.body.appendChild(heart);
+            
+            setTimeout(() => heart.remove(), 7000);
+        }
+
+        // Revelar mensaje especial
+        let clickCount = 0;
+        function revealMessage() {
+            clickCount++;
+            const message = document.getElementById('special-message');
+            const hearts = document.getElementById('hearts');
+            const poem = document.getElementById('poem');
+            const song = document.getElementById('song');
+            const button = document.querySelector('.flower-button');
+            
+            if (clickCount === 1) {
+                poem.classList.remove('hidden');
+                button.textContent = '💕 Click otra vez corazón 💕';
+                
+                // Crear pétalos cayendo
+                const petalCount = window.innerWidth < 480 ? 10 : 15;
+                for (let i = 0; i < petalCount; i++) {
+                    setTimeout(createFallingPetal, i * 100);
+                }
+            } else if (clickCount === 2) {
+                song.classList.remove('hidden');
+                button.textContent = '💛 Una vez más, mi corazón 💛';
+                
+                // Más pétalos
+                for (let i = 0; i < 10; i++) {
+                    setTimeout(createFallingPetal, i * 100);
+                }
+            } else if (clickCount === 3) {
+                message.innerHTML = "Anahí, corazón de melón:<br>Eres mi persona favorita<br>Mi primavera eterna<br>💛🌻💕";
+                message.classList.remove('hidden');
+                hearts.classList.remove('hidden');
+                button.style.display = 'none';
+                
+                // Crear lluvia de corazones
+                const heartCount = window.innerWidth < 480 ? 15 : 20;
+                for (let i = 0; i < heartCount; i++) {
+                    setTimeout(createRandomHeart, i * 200);
+                }
+                
+                // Crear más pétalos para celebrar
+                for (let i = 0; i < 25; i++) {
+                    setTimeout(createFallingPetal, i * 100);
+                }
+            }
+        }
+
+        // Agregar corazones periódicamente
+        setInterval(createRandomHeart, 4000);
+
+        // Ajustar elementos al cambiar orientación
+        window.addEventListener('resize', function() {
+            const sunflowers = document.querySelectorAll('.sunflower');
+            if (sunflowers.length > 15) {
+                for (let i = 15; i < sunflowers.length; i++) {
+                    sunflowers[i].remove();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
